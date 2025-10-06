@@ -22,7 +22,7 @@ function App() {
     })();
 
   },[]);
-  const filteredCountries = query.trim() === ""? countries: countries.filter((country) => (country.common.toLowerCase().startsWith(query.toLowerCase())));
+  const filteredCountries = query.trim() === ""? countries: countries.filter((country) => (country.common.toLowerCase().includes(query.toLowerCase())));
 
   return (
     
