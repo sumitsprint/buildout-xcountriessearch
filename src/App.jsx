@@ -7,8 +7,12 @@ import axios from 'axios'
 function App() {
   const [countries, setCountries] = useState([]);
   const [query, setQuery] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState([]);
   
 
+const handleChange = (e) => {
+  setQuery(e.target.value)
+}
   useEffect(() => {
     (async () => {
       try{
@@ -22,7 +26,15 @@ function App() {
     })();
 
   },[]);
-  const filteredCountries = query.trim() === ""? countries: countries.filter((country) => (country.common.toLowerCase().includes(query.toLowerCase())));
+  useEffect(() =>{
+    const timer = setTimeout(()=> {
+      const filtered = query.trim() === ""? countries: countries.filter((country) => (country.common.toLowerCase().includes(query.trim().toLowerCase())))
+        setFilteredCountries(filtered);
+
+
+    }, 500)
+    return () => clearTimeout(timer);
+  },[query, countries])
 
   return (
     
@@ -37,7 +49,7 @@ function App() {
           type = "text"
           placeholder='Search for countries...'
           value = {query}
-          onChange={(e) => (setQuery(e.target.value))}
+          onChange={handleChange}
 
           />
         </div>
@@ -70,3 +82,15 @@ function App() {
 }
 
 export default App
+/**
+ * const increment = (n) => setCount((c) => c + n)
+ * 
+ * onClick = {() => increment(5)}
+ * 
+ * const handleChange = (e) => {
+  setQuery(e.target.value)
+}
+ *
+onChange={handleChange}
+onChange = {(e) => setQuery(e.target.value)}
+ */
